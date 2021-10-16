@@ -2,10 +2,7 @@
 
 package net.pempek.unicode;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
+import java.io.*;
 
 public final class UnicodeBOMInputStreamUsage
 {
@@ -18,8 +15,8 @@ public final class UnicodeBOMInputStreamUsage
     // with US-ASCII, the BOM is replaced by ?
     PrintStream out = new PrintStream(System.out, true, "US-ASCII");
 
-    FileInputStream fis = new FileInputStream("offending_bom.txt");
-    UnicodeBOMInputStream ubis = new UnicodeBOMInputStream(fis);
+    InputStream is = UnicodeBOMInputStreamUsage.class.getResourceAsStream("/offending_bom.txt");
+    UnicodeBOMInputStream ubis = new UnicodeBOMInputStream(is);
 
     out.println("Detected BOM: " + ubis.getBOM());
 
@@ -32,10 +29,10 @@ public final class UnicodeBOMInputStreamUsage
     br.close();
     isr.close();
     ubis.close();
-    fis.close();
+    is.close();
 
-    fis = new FileInputStream("offending_bom.txt");
-    ubis = new UnicodeBOMInputStream(fis);
+    is = UnicodeBOMInputStreamUsage.class.getResourceAsStream("/offending_bom.txt");
+    ubis = new UnicodeBOMInputStream(is);
     ubis.skipBOM();
 
     out.print("Reading the content of the file after skipping the BOM: ");
@@ -47,7 +44,7 @@ public final class UnicodeBOMInputStreamUsage
     br.close();
     isr.close();
     ubis.close();
-    fis.close();
+    is.close();
   }
 
 } // UnicodeBOMInputStreamUsage

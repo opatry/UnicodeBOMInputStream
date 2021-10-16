@@ -1,0 +1,11 @@
+plugins {
+  id 'application'
+}
+
+application {
+  mainClass = 'net.pempek.unicode.UnicodeBOMInputStreamUsage'
+}
+
+dependencies {
+  implementation project(':lib')
+}
