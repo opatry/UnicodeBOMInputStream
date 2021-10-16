@@ -108,7 +108,7 @@ public class UnicodeBOMInputStream extends InputStream
       return result;
     }
 
-    private BOM(final byte bom[], final String description)
+    private BOM(final byte[] bom, final String description)
     {
       assert(bom != null)               : "invalid BOM: null is not allowed";
       assert(description != null)       : "invalid description: null is not allowed";
@@ -118,7 +118,7 @@ public class UnicodeBOMInputStream extends InputStream
       this.description  = description;
     }
 
-            final byte    bytes[];
+            final byte[]  bytes;
     private final String  description;
 
   } // BOM
@@ -142,8 +142,8 @@ public class UnicodeBOMInputStream extends InputStream
 
     in = new PushbackInputStream(inputStream, 4);
 
-    final byte  bom[] = new byte[4];
-    final int   read  = in.read(bom);
+    final byte[] bom  = new byte[4];
+    final int    read = in.read(bom);
 
     switch(read)
     {
@@ -237,14 +237,14 @@ public class UnicodeBOMInputStream extends InputStream
   }
 
   @Override
-  public int read(final byte b[]) throws  IOException,
+  public int read(final byte[] b) throws  IOException,
                                           NullPointerException
   {
     return in.read(b, 0, b.length);
   }
 
   @Override
-  public int read(final byte b[],
+  public int read(final byte[] b,
                   final int off,
                   final int len) throws IOException,
                                         NullPointerException
