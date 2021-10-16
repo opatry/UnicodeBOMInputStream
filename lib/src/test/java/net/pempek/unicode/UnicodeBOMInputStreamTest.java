@@ -48,89 +48,89 @@ public class UnicodeBOMInputStreamTest
     int i;
     int value;
 
-    final UnicodeBOMInputStream content = new UnicodeBOMInputStream(new ByteArrayInputStream(CONTENT));
+    try (UnicodeBOMInputStream content = new UnicodeBOMInputStream(new ByteArrayInputStream(CONTENT))) {
 
-    assertEquals(BOM.NONE, content.getBOM());
+      assertEquals(BOM.NONE, content.getBOM());
 
-    i = 0;
-    while ((value = content.read()) != -1)
-      assertEquals(value, CONTENT[i++]);
+      i = 0;
+      while ((value = content.read()) != -1)
+        assertEquals(value, CONTENT[i++]);
+    }
 
-    content.close();
+    try (ByteArrayInputStream bais = new ByteArrayInputStream(UTF8_BOM_CONTENT);
+         UnicodeBOMInputStream utf8BOM = new UnicodeBOMInputStream(bais)) {
 
-    final UnicodeBOMInputStream utf8BOM = new UnicodeBOMInputStream(new ByteArrayInputStream(UTF8_BOM_CONTENT));
+      assertEquals(BOM.UTF_8, utf8BOM.getBOM());
 
-    assertEquals(BOM.UTF_8, utf8BOM.getBOM());
+      utf8BOM.skipBOM();
 
-    utf8BOM.skipBOM();
+      i = 0;
+      while ((value = utf8BOM.read()) != -1)
+        assertEquals(value, CONTENT[i++]);
+    }
 
-    i = 0;
-    while ((value = utf8BOM.read()) != -1)
-      assertEquals(value, CONTENT[i++]);
+    try (ByteArrayInputStream bais = new ByteArrayInputStream(UTF16_BE_BOM_CONTENT);
+         UnicodeBOMInputStream utf16BEBOM = new UnicodeBOMInputStream(bais)) {
 
-    utf8BOM.close();
+      assertEquals(BOM.UTF_16_BE, utf16BEBOM.getBOM());
 
-    final UnicodeBOMInputStream utf16BEBOM = new UnicodeBOMInputStream(new ByteArrayInputStream(UTF16_BE_BOM_CONTENT));
+      utf16BEBOM.skipBOM();
 
-    assertEquals(BOM.UTF_16_BE, utf16BEBOM.getBOM());
+      i = 0;
+      while ((value = utf16BEBOM.read()) != -1)
+        assertEquals(value, CONTENT[i++]);
+    }
 
-    utf16BEBOM.skipBOM();
+    try (ByteArrayInputStream bais = new ByteArrayInputStream(UTF16_LE_BOM_CONTENT);
+         UnicodeBOMInputStream utf16LEBOM = new UnicodeBOMInputStream(bais)) {
 
-    i = 0;
-    while ((value = utf16BEBOM.read()) != -1)
-      assertEquals(value, CONTENT[i++]);
+      assertEquals(BOM.UTF_16_LE, utf16LEBOM.getBOM());
 
-    utf16BEBOM.close();
+      utf16LEBOM.skipBOM();
 
-    final UnicodeBOMInputStream utf16LEBOM = new UnicodeBOMInputStream(new ByteArrayInputStream(UTF16_LE_BOM_CONTENT));
+      i = 0;
+      while ((value = utf16LEBOM.read()) != -1)
+        assertEquals(value, CONTENT[i++]);
+    }
 
-    assertEquals(BOM.UTF_16_LE, utf16LEBOM.getBOM());
+    try (ByteArrayInputStream bais = new ByteArrayInputStream(UTF32_BE_BOM_CONTENT);
+         UnicodeBOMInputStream utf32BEBOM = new UnicodeBOMInputStream(bais)) {
 
-    utf16LEBOM.skipBOM();
+      assertEquals(BOM.UTF_32_BE, utf32BEBOM.getBOM());
 
-    i = 0;
-    while ((value = utf16LEBOM.read()) != -1)
-      assertEquals(value, CONTENT[i++]);
+      utf32BEBOM.skipBOM();
 
-    utf16LEBOM.close();
+      i = 0;
+      while ((value = utf32BEBOM.read()) != -1)
+        assertEquals(value, CONTENT[i++]);
+    }
 
-    final UnicodeBOMInputStream utf32BEBOM = new UnicodeBOMInputStream(new ByteArrayInputStream(UTF32_BE_BOM_CONTENT));
+    try (ByteArrayInputStream bais = new ByteArrayInputStream(UTF32_LE_BOM_CONTENT);
+         UnicodeBOMInputStream utf32LEBOM = new UnicodeBOMInputStream(bais)) {
 
-    assertEquals(BOM.UTF_32_BE, utf32BEBOM.getBOM());
+      assertEquals(BOM.UTF_32_LE, utf32LEBOM.getBOM());
 
-    utf32BEBOM.skipBOM();
+      utf32LEBOM.skipBOM();
 
-    i = 0;
-    while ((value = utf32BEBOM.read()) != -1)
-      assertEquals(value, CONTENT[i++]);
-
-    utf32BEBOM.close();
-
-    final UnicodeBOMInputStream utf32LEBOM = new UnicodeBOMInputStream(new ByteArrayInputStream(UTF32_LE_BOM_CONTENT));
-
-    assertEquals(BOM.UTF_32_LE, utf32LEBOM.getBOM());
-
-    utf32LEBOM.skipBOM();
-
-    i = 0;
-    while ((value = utf32LEBOM.read()) != -1)
-      assertEquals(value, CONTENT[i++]);
-
-    utf32LEBOM.close();
+      i = 0;
+      while ((value = utf32LEBOM.read()) != -1)
+        assertEquals(value, CONTENT[i++]);
+    }
   }
 
   @Test
   public void test_JavaBehaviour() throws IOException
   {
-    final InputStream utf8BOM = new ByteArrayInputStream(UTF8_BOM_CONTENT);
-    final InputStreamReader reader = new InputStreamReader(utf8BOM, StandardCharsets.UTF_8);
+    try (InputStream utf8BOM = new ByteArrayInputStream(UTF8_BOM_CONTENT);
+         InputStreamReader reader = new InputStreamReader(utf8BOM, StandardCharsets.UTF_8)) {
 
-    assertEquals(0xFEFF, reader.read()); // http://www.fileformat.info/info/unicode/char/feff/
+      assertEquals(0xFEFF, reader.read()); // http://www.fileformat.info/info/unicode/char/feff/
 
-    for (int i = 0; i < UTF8_BOM_CONTENT.length-3; ++i)
-      assertEquals(UTF8_BOM_CONTENT[i+3], reader.read());
+      for (int i = 0; i < UTF8_BOM_CONTENT.length - 3; ++i)
+        assertEquals(UTF8_BOM_CONTENT[i + 3], reader.read());
 
-    assertEquals(-1, reader.read());
+      assertEquals(-1, reader.read());
+    }
   }
 
   private static final byte[] CONTENT = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
