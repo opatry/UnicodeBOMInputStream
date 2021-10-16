@@ -7,10 +7,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import net.pempek.unicode.UnicodeBOMInputStream.BOM;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
+
+import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * The <code>UnicodeBOMInputStreamTest</code> class tests the
@@ -21,8 +24,10 @@ import net.pempek.unicode.UnicodeBOMInputStream.BOM;
  * @author Gregory Pakosz
  * @version 1.0
  */
-public class UnicodeBOMInputStreamTest extends TestCase
+@RunWith(JUnit4.class)
+public class UnicodeBOMInputStreamTest
 {
+  @Test
   public final void test_UnicodeBOMInputStream_InputStream() throws IOException
   {
     try
@@ -36,6 +41,7 @@ public class UnicodeBOMInputStreamTest extends TestCase
     }
   }
 
+  @Test
   public void test_getBOM() throws IOException
   {
     int i;
@@ -112,6 +118,7 @@ public class UnicodeBOMInputStreamTest extends TestCase
     utf32LEBOM.close();
   }
 
+  @Test
   public void test_JavaBehaviour() throws IOException
   {
     final InputStream utf8BOM = new ByteArrayInputStream(UTF8_BOM_CONTENT);
@@ -159,15 +166,4 @@ public class UnicodeBOMInputStreamTest extends TestCase
     System.arraycopy(BOM.UTF_32_LE.getBytes(), 0, UTF32_LE_BOM_CONTENT, 0, BOM.UTF_32_LE.getBytes().length);
     System.arraycopy(CONTENT, 0, UTF32_LE_BOM_CONTENT, BOM.UTF_32_LE.getBytes().length, CONTENT.length);
   }
-
-  public final static Test suite()
-  {
-    return new TestSuite(UnicodeBOMInputStreamTest.class);
-  }
-
-  public static void main(String[] args)
-  {
-    junit.textui.TestRunner.run(suite());
-  }
-
 } // UnicodeBOMInputStreamTest
