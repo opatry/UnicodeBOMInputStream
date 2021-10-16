@@ -6,6 +6,13 @@ repositories {
     mavenCentral()
 }
 
+test {
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "short"
+    }
+}
+
 dependencies {
     testImplementation 'junit:junit:4.13.2'
 }
