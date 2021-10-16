@@ -1,0 +1,13 @@
+# These are explicitly windows files and should use crlf
+*.bat           text eol=crlf
+
+# Java sources
+*.java          text diff=java
+*.groovy        text diff=java
+*.gradle        text diff=java
+
+# These files are binary and should be left untouched
+# (binary is a macro for -text -diff)
+*.class         binary
+*.jar           binary
+

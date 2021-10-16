@@ -43,7 +43,7 @@ closed as "won't fix". Because fuck you, just skip the BOM yourself.
 Wrap any `InputStream` with `UnicodeBOMInputStream` and use `getBOM()` and/or
 `skipBOM()` methods. See [`UnicodeBOMInputStreamUsage.java`].
 
-[`UnicodeBOMInputStreamUsage.java`]: example/net/pempek/unicode/UnicodeBOMInputStreamUsage.java
+[`UnicodeBOMInputStreamUsage.java`]: example/src/main/java/net/pempek/unicode/UnicodeBOMInputStreamUsage.java
 
 --------------------------------------------------------------------------------
 
