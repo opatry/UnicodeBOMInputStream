@@ -6,6 +6,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 import net.pempek.unicode.UnicodeBOMInputStream.BOM;
 import org.junit.Test;
@@ -122,7 +123,7 @@ public class UnicodeBOMInputStreamTest
   public void test_JavaBehaviour() throws IOException
   {
     final InputStream utf8BOM = new ByteArrayInputStream(UTF8_BOM_CONTENT);
-    final InputStreamReader reader = new InputStreamReader(utf8BOM, "UTF-8");
+    final InputStreamReader reader = new InputStreamReader(utf8BOM, StandardCharsets.UTF_8);
 
     assertEquals(0xFEFF, reader.read()); // http://www.fileformat.info/info/unicode/char/feff/
 
